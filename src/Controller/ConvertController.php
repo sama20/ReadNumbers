@@ -65,7 +65,7 @@ public function author(ValidatorInterface $validator)
         $cosmo = new Cosmo('en');
         $newLangs=[];
         foreach ($languages as $key => $lang) {
-            $newLangs[$lang] = $cosmo->language($lang); 
+            $newLangs[$lang] = $cosmo->language($lang) .'-'.$cosmo->country($lang); 
         }
         return new Response(json_encode($newLangs, JSON_UNESCAPED_UNICODE));
     }

@@ -4,3 +4,6 @@
 app_lucky_number:
     path: /convert/number
     controller: App\Controller\ConvertController::readNumber
+app_get_lanuages:
+    path: /get/languages
+    controller: App\Controller\ConvertController::getLanguages

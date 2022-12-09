@@ -34,22 +34,14 @@
             </div>
             <div class="col-xs">
               <div class="box">
-                <select name="locale" id="locale" v-model="lang">
-                  <option value="">select locale please...</option>
-                  <option value="ar">Arabic</option>
-                  <option value="nl" selected>Dutch</option>
-                  <option value="en">English</option>
-                  <option value="fr">French</option>
-                  <option value="ka">Georgian</option>
-                  <option value="de">German</option>
-                  <option value="he">Hebrew</option>
-                  <option value="hi">Hindi</option>
-                  <option value="it">Italian</option>
-                  <option value="ko">Korean</option>
-                  <option value="fa">Persian</option>
-                  <option value="es">Spanish</option>
-                  <option value="tr">Turkish</option>
-                </select>
+                <div id="selector"></div>
+                  <select name="locale" id="locale" v-model="lang">
+                    <option v-for="(item,key) in reasons" :value="key">
+                      {{item}}
+                    </option>
+                  </select>
+                </div>
+               
               </div>
             </div>
             <!-- <div class="col-xs">
@@ -78,12 +70,29 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
     <script>
+      // var selector = new Vue({
+      //   el: '#selector',
+      //   data: {
+      //     reasons: {
+      //       "select1": "Select 1",
+      //       "select2": "Select 2",
+      //       "select3": "Select 3",
+      //       "select4": "Select 4",
+      //       "select5": "Select 5",
+      //       "select6": "Select 6",
+      //       "select7": "Select 7"
+      //     }
+      //   }
+      // })
       const app = new Vue({
         el: "#app",
         async mounted() {
           this.fetchData();
+          this.getLanguages();
         }, 
         methods: {
+        
+
           async fetchData() {
             let newData = `{"number": ${this.number},"language": "${this.lang}"}`;
           
@@ -96,16 +105,34 @@
             
             const res = await axios(config);
             
-            console.log("res", JSON.stringify(res.data));
-            console.log("res", res.data.spellout);
+            // console.log("res", JSON.stringify(res.data));
+            // console.log("res", res.data.spellout);
             document.getElementById('result').innerHTML = JSON.stringify(res.data);
             this.lista = res.data;            
           },
+          async getLanguages(){
+            let config = {
+              method: "get",
+              url: "http://127.0.0.1:8000/get/languages",
+              headers: {},
+              data: '',
+            };
+            const res = await axios(config);
+            
+            console.log('all languages:',this.reasons);
+            // console.log('all languages:',res.data);
+            this.reasons=res.data;
+            console.log('all languages:',this.reasons);
+          }
         },       
         data: {
           lista: [],
           number: "80000",
-          lang: 'ar',
+          lang: 'ar',      
+          reasons: {
+            "select1": "Select 1",
+            "select2": "Select 2",
+          }
         },
         computed: {
           resultShow() {

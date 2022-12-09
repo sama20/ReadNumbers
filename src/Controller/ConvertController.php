@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use RegisterUserRequest;
+use ResourceBundle;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Salarmehr\Cosmopolitan\Cosmo;
@@ -57,5 +58,15 @@ public function author(ValidatorInterface $validator)
 
         $response = new Response(json_encode(['spellout' => $cosmo,], JSON_UNESCAPED_UNICODE));
         return $response;
+    }
+
+    public function getLanguages(){
+        $languages =ResourceBundle::getLocales('');
+        $cosmo = new Cosmo('en');
+        $newLangs=[];
+        foreach ($languages as $key => $lang) {
+            $newLangs[$lang] = $cosmo->language($lang); 
+        }
+        return new Response(json_encode($newLangs, JSON_UNESCAPED_UNICODE));
     }
 }
